@@ -4,7 +4,7 @@ description: Atomic approach to reliable UI test creation - explore, validate, b
 when_to_use: When tests fail with strict mode violations, agents make wrong assumptions about page structure, tests are too complex and hard to maintain, registration forms or dynamic content cause timeouts, multiple test steps make debugging difficult
 version: 1.0.0
 languages: [typescript, javascript]
-dependencies: [@playwright/test, playwright MCP server]
+dependencies: [@playwright/test, playwright MCP server, atomic-test-generator]
 ---
 
 # Playwright Atomic Testing
@@ -60,6 +60,7 @@ test("should navigate to home page tc-001", async ({ page }) => {
 | **Navigation** | One click per test, verify URL | Complex multi-step flows |
 | **Strict violations** | Use filtering locators approach | Use ambiguous selectors |
 | **Timeout issues** | Add specific waits for dynamic content | Use arbitrary timeouts |
+| **Test scaffolding** | Use atomic-test-generator script | Manual template creation |
 
 ## Implementation
 
@@ -69,6 +70,12 @@ Use MCP to understand page structure before writing any tests. Document actual e
 ### Step 2: Create Minimal Viable Test
 Start with absolute minimum - navigate and verify basic functionality. Run test after each change.
 
+**Quick Start:** Use the atomic-test-generator tool to scaffold proper test structure:
+```bash
+./atomic-test-generator --feature <feature-name> --action "<action-description>"
+```
+This creates atomic test templates with proper test.step() organization and tc-XXX IDs.
+
 ### Step 3: Build Incrementally
 Add ONE action/assertion at a time. Stop after 2 failures or 1 minute of troubleshooting.
 
@@ -77,6 +84,19 @@ Use filtering locators approach. Create unique selectors by combining parent ele
 
 ### Step 5: Use Web-First Assertions
 Prioritize `getByRole()`, `getByLabel()`, `getByText()` over CSS selectors. Use auto-retrying assertions, not hard-coded waits.
+
+**Tool: Atomic Test Generator**
+Use the `atomic-test-generator` script to quickly scaffold atomic test templates:
+```bash
+# Generate single test
+./atomic-test-generator --feature login --action "user authentication"
+
+# Generate multiple tests
+./atomic-test-generator -f navigation -a "menu navigation" -c 3
+
+# Generate tests in specific directory
+./atomic-test-generator --feature search --action "product search" --count 2 --output ./tests/search
+```
 
 **See `/Users/maksim/.config/superpowers/skills/testing/playwright/detailed-reference.md` for complete code examples and best practices.**
 
@@ -89,6 +109,7 @@ Prioritize `getByRole()`, `getByLabel()`, `getByText()` over CSS selectors. Use 
 | **Not using filtering()** | Causes strict mode violation | Use filtering locators approach |
 | **Repeated page.goto()** | Easy state reset | Use test isolation instead |
 | **Long test steps** | "Comprehensive" mindset | One specific action per step |
+| **Manual templates** | Creating boilerplate repeatedly | Use atomic-test-generator script |
 
 ## Red Flags - STOP and Start Over
 
@@ -108,6 +129,7 @@ Prioritize `getByRole()`, `getByLabel()`, `getByText()` over CSS selectors. Use 
 | "First name is standard label" | Pages have custom implementations - verify with MCP first | Use MCP to explore actual form structure before testing |
 | "Tests pass locally, fail in CI" | Different load times and race conditions | Handle dynamic content explicitly with proper waits |
 | "Strict mode violation is just a warning" | It's a test failure - multiple elements match your selector | Use filtering locators approach to create unique selectors |
+| "Creating templates manually is faster" | Manual creation leads to inconsistent structure and missed steps | Use atomic-test-generator for consistent, proper structure |
 
 ## Skill Creation Checklist (TDD Adapted)
 
