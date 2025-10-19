@@ -1,8 +1,8 @@
 ---
 name: Getting Started with Skills
-description: Skills wiki intro - mandatory workflows, search tool, brainstorming triggers, personal skills
-when_to_use: Read this FIRST at start of each conversation when skills are active
-version: 4.0.0
+description: Skills wiki intro - mandatory workflows, search tool, brainstorming triggers
+when_to_use: when starting any conversation
+version: 4.0.2
 ---
 
 # Getting Started with Skills
@@ -15,29 +15,12 @@ version: 4.0.0
 
 3. **Create TodoWrite todos for checklists.** Mental tracking = steps get skipped. Every time.
 
-## Mandatory Workflow 1: Brainstorming Before Coding
 
-When your human partner wants to start a project, no matter how big or small:
-
-**YOU MUST:**
-1. Use Read tool: `${SUPERPOWERS_SKILLS_ROOT}/skills/collaboration/brainstorming/SKILL.md`
-2. Wait for result
-3. Follow what it says
-
-**Don't:**
-- Jump straight to code
-- Wait for /brainstorm command
-- Skip brainstorming because you "understand the idea"
-
-**Why:** Jumping into implementation without understanding requirements wastes time. Requirements change, assumptions are wrong, and starting over is expensive. We always brainstorm first.
-
-## Mandatory Workflow 2: Before ANY Task
+## Mandatory Workflow: Before ANY Task
 
 **1. Check skills list** at session start, or run `find-skills [PATTERN]` to filter.
 
-**2. Check if historical context would help** - See Workflow 3. If applicable, dispatch subagent to search past work.
-
-**3. If relevant skill exists, YOU MUST use it:**
+**2. If relevant skill exists, YOU MUST use it:**
 
 - Use Read tool with full path: `${SUPERPOWERS_SKILLS_ROOT}/skills/category/skill-name/SKILL.md`
 - Read ENTIRE file, not just frontmatter
@@ -51,22 +34,7 @@ When your human partner wants to start a project, no matter how big or small:
 
 **Why:** Skills document proven techniques that save time and prevent mistakes. Not using available skills means repeating solved problems and making known errors.
 
-Skills exist and you didn't use them = failed task.
-
-## Workflow 3: Historical Context Search (Conditional)
-
-**When:** Partner mentions past work, issue feels familiar, starting task in familiar domain, stuck/blocked, before reinventing
-
-**When NOT:** Info in current convo, codebase state questions, first encounter, partner wants fresh thinking
-
-**How (use subagent for 50-100x context savings):**
-1. Dispatch subagent with template: `${SUPERPOWERS_SKILLS_ROOT}/skills/collaboration/remembering-conversations/tool/prompts/search-agent.md`
-2. Receive synthesis (200-1000 words) + source pointers
-3. Apply insights (never load raw .jsonl files)
-
-**Why:** Past conversations contain context, decisions, and lessons learned. Loading raw files wastes 50-100x more context than using a subagent to synthesize.
-
-**Red flags:** Reading .jsonl directly, pasting excerpts, asking "which conversation?", browsing archives
+If a skill for your task exists, you must use it or you will fail at your task.
 
 ## Skills with Checklists
 
@@ -121,15 +89,7 @@ Your human partner's specific instructions describe WHAT to do, not HOW.
 
 **Why:** Specific instructions mean clear requirements, which is when workflows matter MOST. Skipping process on "simple" tasks is how simple tasks become complex problems.
 
-## Writing Skills
-
-Want to document a technique, pattern, or tool for reuse?
-
-See skills/meta/writing-skills/SKILL.md for the complete TDD process for documentation.
-
 ## Summary
-
-**Starting conversation?** You just read using-skills/SKILL.md. Good.
 
 **Starting any task:**
 1. Run find-skills to check for relevant skills
