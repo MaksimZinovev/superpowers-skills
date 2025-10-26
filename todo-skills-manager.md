@@ -74,22 +74,20 @@ To manage Skills, run:
 ts-node scripts/manage_skills.ts [command]
 ```
 
-```
-
 ## Step 3: Create the API Helper Skill
 
-```
+```shell
 
 ~/.claude/skills/api-helper/
 ├── SKILL.md
 └── scripts/
 └── api_client.ts
 
-````
+```
 
 Create the API Helper SKILL.md [(1)](https://docs.claude.com/en/docs/claude-code/skills#troubleshooting):
 
-```markdown
+````markdown
 ---
 name: api-helper
 description: Provides API integration capabilities for making authenticated requests to Claude API endpoints. Use when other Skills need to make API calls to Claude services.
@@ -100,23 +98,27 @@ dependencies: typescript>=5.0.0, @anthropic-ai/sdk>=0.25.0
 # API Helper
 
 ## Overview
+
 Handles API authentication and requests to Claude services.
 
 ## Capabilities
+
 - Authenticated API calls
 - Error handling and retry logic
 - Response formatting
 
 ## Usage
+
 Use when other Skills need to make API calls to Claude services.
 
 ## Instructions
-Import and use the API client:
-```typescript
-import { createClient } from './scripts/api_client';
-const client = createClient();
-````
 
+Import and use the API client:
+
+```typescript
+import { createClient } from "./scripts/api_client";
+const client = createClient();
+```
 ````
 
 ## Step 4: Create the TypeScript Scripts
@@ -124,42 +126,45 @@ const client = createClient();
 Create `~/.claude/skills/skills-manager/scripts/list_skills.ts`:
 
 ```typescript
-import Anthropic from '@anthropic-ai/sdk';
+import Anthropic from "@anthropic-ai/sdk";
 
 async function listSkills() {
-    const client = new Anthropic({
-        apiKey: process.env.ANTHROPIC_API_KEY,
+  const client = new Anthropic({
+    apiKey: process.env.ANTHROPIC_API_KEY,
+  });
+
+  try {
+    // List all Skills
+    const skills = await client.beta.skills.list({
+      betas: ["skills-2025-10-02"],
     });
 
-    try {
-        // List all Skills
-        const skills = await client.beta.skills.list({
-            betas: ["skills-2025-10-02"]
-        });
+    console.log("Available Skills:");
+    skills.data.forEach((skill, index) => {
+      console.log(
+        `${index + 1}. ${skill.id}: ${skill.display_title} (source: ${
+          skill.source
+        })`
+      );
+    });
 
-        console.log("Available Skills:");
-        skills.data.forEach((skill, index) => {
-            console.log(`${index + 1}. ${skill.id}: ${skill.display_title} (source: ${skill.source})`);
-        });
+    // List only custom Skills
+    const customSkills = await client.beta.skills.list({
+      source: "custom",
+      betas: ["skills-2025-10-02"],
+    });
 
-        // List only custom Skills
-        const customSkills = await client.beta.skills.list({
-            source: "custom",
-            betas: ["skills-2025-10-02"]
-        });
-
-        console.log(`\nCustom Skills (${customSkills.data.length}):`);
-        customSkills.data.forEach((skill, index) => {
-            console.log(`${index + 1}. ${skill.id}: ${skill.display_title}`);
-        });
-
-    } catch (error) {
-        console.error('Error listing skills:', error);
-    }
+    console.log(`\nCustom Skills (${customSkills.data.length}):`);
+    customSkills.data.forEach((skill, index) => {
+      console.log(`${index + 1}. ${skill.id}: ${skill.display_title}`);
+    });
+  } catch (error) {
+    console.error("Error listing skills:", error);
+  }
 }
 
 listSkills();
-````
+```
 
 [(2)](https://docs.claude.com/en/api/skills-guide#using-skills-in-messages)
 
@@ -342,11 +347,11 @@ Then test in Claude Code:
 
 Claude will automatically load and use the Skills when relevant to your request [(1)](https://docs.claude.com/en/docs/claude-code/skills#troubleshooting)[(3)](https://docs.claude.com/en/docs/agents-and-tools/agent-skills/overview#where-skills-work).
 
-## Step 9: Create a Plugin for Team Distribution (Optional)
+## Step 9: Create a Plugin for Team Distribution (Future Roadmap)
 
 To share with your team, create a Claude Code plugin [(4)](https://docs.claude.com/en/docs/claude-code/plugins-reference#plugin-components-reference):
 
-```
+```shell
 skills-management-plugin/
 ├── .claude-plugin/
 │   └── plugin.json
@@ -395,7 +400,9 @@ Key Questions
    Answer: simplified version focused on just the listing functionality
 3. Environment: Should I create these skills in your personal ~/.claude/skills/ directory, or do you
    want them created in the current project repository for development and testing.
-   Answer: I want them created in the current project repository which is a repo used by Claude Code plugin https://github.com/MaksimZinovev/superpowers
+   Answer: I want them created in the current project repository folder /Users/maksim/repos/superpowers-skills/skills/meta/skills-manager. It will be used  by Claude Code plugin https://github.com/MaksimZinovev/superpowers
+4. Step 9: Do you want implement skill-manager plugin.
+   Answer: no. Not now.
 
 ## Permanent Integration Notes
 
