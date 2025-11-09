@@ -1,9 +1,18 @@
 {
   "permissions": {
     "allow": [
-      "Read(//Users/maksim/repos/llmstxt/claude-code/**)"
+      "Read(//Users/maksim/repos/llmstxt/claude-code/**)",
+      "Read(//Users/maksim/repos/context7-cli/**)",
+      "Read(//Users/maksim/repos/superpowers-skills/skills/**)",
+      "Read(//Users/maksim/repos/mcporter**)",
+      "Bash(find:*)"
     ],
     "deny": [],
     "ask": []
-  }
+  },
+  "enabledMcpjsonServers": [
+    "filesystem",
+    "github",
+    "context7"
+  ]
 }
