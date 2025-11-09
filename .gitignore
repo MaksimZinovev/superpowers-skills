@@ -161,3 +161,4 @@ vite.config.ts.timestamp-*
 # Local 
 
 .local
+.mcp.json
