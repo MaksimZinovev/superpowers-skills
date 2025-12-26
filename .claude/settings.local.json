@@ -5,7 +5,9 @@
       "Read(//Users/maksim/repos/context7-cli/**)",
       "Read(//Users/maksim/repos/superpowers-skills/skills/**)",
       "Read(//Users/maksim/repos/mcporter**)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(npm test)",
+      "Bash(bash tool-info:*)"
     ],
     "deny": [],
     "ask": []
